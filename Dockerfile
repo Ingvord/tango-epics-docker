@@ -23,6 +23,8 @@ RUN mkdir -p /home/tango
 
 COPY ./TangoEpics/release_1_0 /home/tango
 
+RUN chmod +x /home/tango/TangoEpics
+
 ENV TANGO_HOST hzgxenvtest.desy.de:10000
 
 CMD ["/usr/bin/supervisord", "--configuration", "/etc/supervisor/supervisord.conf"]
