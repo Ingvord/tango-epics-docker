@@ -1,17 +1,26 @@
+FROM dmscid/epics-base as epics
+
 FROM bravostuzero/tango-cpp
 
 USER root
 
-RUN apt-get update && apt-get install -y python-pip pkg-config libboost-python-dev
+COPY --from=epics /EPICS /EPICS
 
-RUN pip install numpy pytango==9.2.5 pyepics
+COPY --from=epics /etc/profile.d/01-epics-base.sh /etc/profile.d
+
+RUN apt-get update && apt-get install -y net-tools supervisor python-pip pkg-config libboost-python-dev
+
+COPY supervisord.conf /etc/supervisor/conf.d/
+
+#required for epics env variables script
+RUN ln -s /sbin/ifconfig /usr/bin/ifconfig
+
+RUN pip install numpy pyepics pytango==9.2.5
 
 RUN mkdir -p /home/tango
 
-WORKDIR /home/tango
+COPY ./TangoEpics/release_1_0 /home/tango
 
-USER tango
+ENV TANGO_HOST hzgxenvtest.desy.de:10000
 
-COPY ./TangoEpics/release_1_0 ./TangoEpics
-
-FROM dmscid/epics-base
+CMD ["/usr/bin/supervisord", "--configuration", "/etc/supervisor/supervisord.conf"]
