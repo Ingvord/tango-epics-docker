@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  epics-sim:
+    image: lnlssol/epics-sim
+    entrypoint: /root/runIocsFG.sh
+  tango-epics:
+    image: 971ab1bd4f70
+    environment:
+      - TANGO_HOST=hzgxenvtest:10000

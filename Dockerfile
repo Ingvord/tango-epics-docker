@@ -1,12 +1,14 @@
-FROM dmscid/epics-base as epics
+FROM lnlssol/debian9-epicsbase as epics
 
 FROM bravostuzero/tango-cpp
 
 USER root
 
-COPY --from=epics /EPICS /EPICS
+COPY --from=epics /usr/local/epics /usr/local/epics
 
-COPY --from=epics /etc/profile.d/01-epics-base.sh /etc/profile.d
+COPY --from=epics /etc/profile.d/epics.sh /etc/profile.d/01-epics.sh
+
+COPY --from=epics /etc/ld.so.conf.d/epics.conf /etc/ld.so.conf.d/epics.conf
 
 RUN apt-get update && apt-get install -y net-tools supervisor python-pip pkg-config libboost-python-dev
 
