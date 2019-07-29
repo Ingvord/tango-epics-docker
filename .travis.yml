@@ -1,0 +1,27 @@
+language: bash
+
+notifications:
+  email: false
+
+env:
+  TANGO_VER=9.3.3
+
+services:
+- docker
+
+script:
+- docker build --build-arg TANGO_VER=${TANGO_VER} -t ingvord/tango-epics .
+
+before_deploy:
+- docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+- docker tag ingvord/tango-epics ingvord/tango-epics:${TANGO_VER}
+
+deploy:
+- provider: script
+  script: docker push ingvord/tango-epics:latest
+  on:
+    all_branches: true
+- provider: script
+  script: docker push ingvord/tango-epics:${REST_SERVER_VER}
+  on:
+    all_branches: true
