@@ -22,6 +22,6 @@ deploy:
   on:
     all_branches: true
 - provider: script
-  script: docker push ingvord/tango-epics:${REST_SERVER_VER}
+  script: docker push ingvord/tango-epics:${TANGO_VER}
   on:
     all_branches: true
