@@ -4,7 +4,7 @@ notifications:
   email: false
 
 env:
-  TANGO_VER=9.3.3
+  TANGO_VER=9.2.5
 
 services:
 - docker
