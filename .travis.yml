@@ -4,7 +4,7 @@ notifications:
   email: false
 
 env:
-  TANGO_VER=9.3.3
+  TANGO_VER=9.2.5
 
 services:
 - docker
@@ -14,7 +14,7 @@ script:
 
 before_deploy:
 - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
-- docker tag ingvord/tango-epics ingvord/tango-epics:${TANGO_VER}-with-starter
+- docker tag ingvord/tango-epics ingvord/tango-epics:${TANGO_VER}
 
 deploy:
 - provider: script
@@ -22,6 +22,6 @@ deploy:
   on:
     all_branches: true
 - provider: script
-  script: docker push ingvord/tango-epics:${TANGO_VER}-with-starter
+  script: docker push ingvord/tango-epics:${TANGO_VER}
   on:
     all_branches: true
